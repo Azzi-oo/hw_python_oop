@@ -11,20 +11,20 @@ c = 1.1
 class InfoMessage:
     """Информационное сообщение о тренировке."""
     def __init__(self, training_type, duration,
-                 distance, speed, calories) -> None: 
+                 distance, speed, calories) -> None:
         self.training_type = training_type
         self.duration = duration
         self.distance = distance
         self.speed = speed
         self.calories = calories
 
-    def get_message(self): 
+    def get_message(self):
         return (f'Тип тренировки: {self.training_type}; '
                 f'Длительность: {self.duration:.2f} ч.; '
                 f'Дистанция: {self.distance:.2f} км; '
                 f'Ср.скорость: {self.speed:.2f} км/ч; '
                 f'Потрачено ккал: {self.calories:.2f}.')
-     
+
 
 class Training:
     """Базовый класс тренировки."""
@@ -49,7 +49,7 @@ class Training:
         """Получить среднюю скорость движения."""
         self.speed: float = self.distance / self.duration
         return self.speed
-    
+
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         pass
@@ -72,7 +72,7 @@ class Running(Training):
                          + CALORIES_MEAN_SPEED_SHIFT)
                          * self.weight / M_IN_KM * self.duration)
         return self.calories
-        
+
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
@@ -84,7 +84,7 @@ class SportsWalking(Training):
         self.height = height
 
     def get_spent_calories(self) -> float:
-        b1: float = ((self.distance * M_IN_KM) 
+        b1: float = ((self.distance * M_IN_KM)
                      / (self.duration * SEC_IN_HOUR))
         self.calories = (((a * self.weight + (b1**2 / self.height)
                           * b * self.weight) * (self.duration * MIN_IN_HOUR)))
@@ -109,7 +109,7 @@ class Swimming(Training):
         return self.calories
 
     def get_mean_speed(self) -> float:
-        self.speed = (self.length_pool * self.count_pool 
+        self.speed = (self.length_pool * self.count_pool
                       / M_IN_KM / self.duration)
         return self.speed
 
@@ -144,4 +144,3 @@ if __name__ == '__main__':
     for workout_type, data in packages:
         training = read_package(workout_type, data)
         main(training)
-
