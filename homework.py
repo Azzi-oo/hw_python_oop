@@ -3,8 +3,6 @@ MIN_IN_HOUR = 60
 SEC_IN_HOUR = 3600
 CALORIES_MEAN_SPEED_MULTIPLIER = 18
 CALORIES_MEAN_SPEED_SHIFT = 1.79
-a = 0.035
-b = 0.029
 c = 1.1
 
 
@@ -49,7 +47,7 @@ class Training:
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
-        self.speed: float = self.distance * SEC_IN_HOUR / self.duration
+        self.speed: float = self.get_distance() / self.duration
         return self.speed
 
     def get_spent_calories(self) -> float:
@@ -74,13 +72,17 @@ class Running(Training):
     def get_spent_calories(self) -> float:
         self.calories = ((CALORIES_MEAN_SPEED_MULTIPLIER * self.speed
                          + CALORIES_MEAN_SPEED_SHIFT)
-                         * self.weight / M_IN_KM * self.duration)
+                         * self.weight / M_IN_KM * self.duration
+                         * self.MIN_IN_HOUR)
         return self.calories
 
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
+    KMS_IN_MCH = 0.278
     a = 0.035
+    b = 0.029
+    b1 = 100
 
     def __init__(self, action: int,
                  duration: float,
@@ -90,11 +92,11 @@ class SportsWalking(Training):
         self.height = height
 
     def get_spent_calories(self) -> float:
-        b1: float = ((self.distance * M_IN_KM)
-                     / (self.duration * SEC_IN_HOUR))
-        self.calories = (((a * self.weight + (b1**2 / self.height)
-                          * b * self.weight) * (self.duration
-                          * MIN_IN_HOUR * 60)))
+        self.calories = ((self.a * self.weight
+                         + ((self.get_mean_speed() * self.KMS_IN_MCH)**2
+                            / (self.height / self.b1))
+                         * self.b * self.weight) * self.duration
+                         * MIN_IN_HOUR)
         return self.calories
 
 
