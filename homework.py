@@ -42,8 +42,8 @@ class Training:
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
-        self.distance: float = self.action * self.LEN_STEP / M_IN_KM
-        return self.distance
+        distance = self.action * self.LEN_STEP / self.M_IN_KM
+        return distance
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
@@ -82,9 +82,10 @@ class SportsWalking(Training):
     KMS_IN_MCH = 0.278
     a = 0.035
     b = 0.029
-    b1 = 100
+    с = 100
 
-    def __init__(self, action: int,
+    def __init__(self,
+                 action: int,
                  duration: float,
                  weight: float,
                  height: float) -> None:
@@ -94,9 +95,9 @@ class SportsWalking(Training):
     def get_spent_calories(self) -> float:
         self.calories = ((self.a * self.weight
                          + ((self.get_mean_speed() * self.KMS_IN_MCH)**2
-                            / (self.height / self.b1))
+                            / (self.height / self.с))
                          * self.b * self.weight) * self.duration
-                         * MIN_IN_HOUR)
+                         * self.MIN_IN_HOUR)
         return self.calories
 
 
