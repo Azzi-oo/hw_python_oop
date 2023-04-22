@@ -106,6 +106,7 @@ class Swimming(Training):
     """Тренировка: плавание."""
     LEN_STEP = 1.38
     c = 1.1
+    c1 = 2
 
     def __init__(self, action: int,
                  duration: float,
