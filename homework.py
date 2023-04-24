@@ -10,13 +10,6 @@ class InfoMessage:
     speed: float
     calories: float
 
-    def get_message(self) -> str:
-        return (f'Тип тренировки: {self.training_type}; '
-                f'Длительность: {self.duration:.3f} ч.; '
-                f'Дистанция: {self.distance:.3f} км; '
-                f'Ср. скорость: {self.speed:.3f} км/ч; '
-                f'Потрачено ккал: {self.calories:.3f}.')
-
 
 class Training:
     """Базовый класс тренировки."""
@@ -24,6 +17,14 @@ class Training:
     M_IN_KM: int = 1000
     LEN_STEP: float = 0.65
     MIN_IN_HOUR: int = 60
+
+    MESSAGE = (
+        'Тип тренировки: {self.training_type}; '
+        'Длительность: {self.duration:.3f} ч.; '
+        'Дистанция: {self.distance:.3f} км; '
+        'Ср. скорость: {self.speed:.3f} км/ч; '
+        'Потрачено ккал: {self.calories:.3f}.'
+    )
 
     def __init__(self,
                  action: int,
@@ -61,6 +62,10 @@ class Training:
                               self.get_mean_speed(),
                               self.get_spent_calories())
         return message
+
+    def get_message(self) -> str:
+        training_dict = vars(self)
+        return self.MESSAGE.format(**training_dict)
 
 
 class Running(Training):
@@ -108,7 +113,7 @@ class Swimming(Training):
 
     LEN_STEP: float = 1.38
     K_4: float = 1.1
-    c1: int = 2
+    K_5: int = 2
 
     def __init__(self, action: int,
                  duration: float,
@@ -137,7 +142,7 @@ def read_package(workout_type: str, data: list[tuple[int,
                                                      float]]) -> Training:
     """Прочитать данные полученные от датчиков."""
 
-    workout_types: dict = {
+    workout_types: dict[str, type] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking,
