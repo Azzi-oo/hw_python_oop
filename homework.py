@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 
 @dataclass
@@ -20,7 +20,7 @@ class InfoMessage:
     )
 
     def get_message(self) -> str:
-        training_dict = vars(self.show_training_info())
+        training_dict = asdict(self)
         return self.MESSAGE.format(**training_dict)
 
 
