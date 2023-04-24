@@ -1,22 +1,16 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
+from typing import Dict
 
 
 @dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
+
     training_type: str
     duration: float
     distance: float
     speed: float
     calories: float
-
-
-class Training:
-    """Базовый класс тренировки."""
-
-    M_IN_KM: int = 1000
-    LEN_STEP: float = 0.65
-    MIN_IN_HOUR: int = 60
 
     MESSAGE = (
         'Тип тренировки: {self.training_type}; '
@@ -25,6 +19,18 @@ class Training:
         'Ср. скорость: {self.speed:.3f} км/ч; '
         'Потрачено ккал: {self.calories:.3f}.'
     )
+
+    def get_message(self) -> str:
+        message_dict: Dict[str, float] = asdict(self)
+        return self.MESSAGE.format(**message_dict)
+
+
+class Training:
+    """Базовый класс тренировки."""
+
+    M_IN_KM: int = 1000
+    LEN_STEP: float = 0.65
+    MIN_IN_HOUR: int = 60
 
     def __init__(self,
                  action: int,
@@ -62,10 +68,6 @@ class Training:
                               self.get_mean_speed(),
                               self.get_spent_calories())
         return message
-
-    def get_message(self) -> str:
-        training_dict = vars(self)
-        return self.MESSAGE.format(**training_dict)
 
 
 class Running(Training):
