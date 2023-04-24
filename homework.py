@@ -1,5 +1,4 @@
-from dataclasses import dataclass, asdict
-from typing import Dict
+from dataclasses import dataclass
 
 
 @dataclass
@@ -21,8 +20,8 @@ class InfoMessage:
     )
 
     def get_message(self) -> str:
-        message_dict: Dict[str, float] = asdict(self)
-        return self.MESSAGE.format(**message_dict)
+        training_dict = vars(self.show_training_info())
+        return self.MESSAGE.format(**training_dict)
 
 
 class Training:
