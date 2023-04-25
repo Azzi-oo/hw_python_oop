@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 
 @dataclass
@@ -12,15 +12,14 @@ class InfoMessage:
     calories: float
 
     def get_message(self) -> str:
-        message_dict = {
-            'training_type': f'Тип тренировки: {self.training_type}; ',
-            'duration': f'Длительность: {self.duration:.3f} ч.; ',
-            'distance': f'Дистанция: {self.distance:.3f} км; ',
-            'speed': f'Ср. скорость: {self.speed:.3f} км/ч; ',
-            'calories': f'Потрачено ккал: {self.calories:.3f}.',
-        }
-        return ('{training_type} {duration}'
-                '{distance} {speed} {calories}'.format(**message_dict))
+        self.message_dict: str = (
+            'Тип тренировки: {0}; Длительность:'
+            + ' {1:.3f} ч.; '
+            + 'Дистанция: {2:.3f} км; Ср. скорость:'
+            + ' {3:.3f} км/ч;'
+            + ' Потрачено ккал: {4:.3f}.')
+        message_dict: dict = asdict(self)
+        return self.message_dict.format(*message_dict.values())
 
 
 class Training:
