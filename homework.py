@@ -11,13 +11,12 @@ class InfoMessage:
     speed: float
     calories: float
 
+    message_dict: str = (
+        'Тип тренировки: {0}; Длительность: {1:.3f} ч.; '
+        'Дистанция: {2:.3f} км; Ср. скорость: {3:.3f} км/ч;'
+        ' Потрачено ккал: {4:.3f}.')
+
     def get_message(self) -> str:
-        self.message_dict: str = (
-            'Тип тренировки: {0}; Длительность:'
-            + ' {1:.3f} ч.; '
-            + 'Дистанция: {2:.3f} км; Ср. скорость:'
-            + ' {3:.3f} км/ч;'
-            + ' Потрачено ккал: {4:.3f}.')
         message_dict: dict = asdict(self)
         return self.message_dict.format(*message_dict.values())
 
@@ -147,8 +146,7 @@ def read_package(workout_type: str, data: list[tuple[int,
         'WLK': SportsWalking,
     }
     if workout_type in workout_types:
-        some_training: Training = workout_types[workout_type](*data)
-        return some_training
+        return workout_types[workout_type](*data)
     else:
         raise ValueError('Неправильный вид тренировки')
 
