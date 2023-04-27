@@ -140,7 +140,7 @@ def read_package(workout_type: str, data: list[tuple[int,
                                                      float]]) -> Training:
     """Прочитать данные полученные от датчиков."""
 
-    workout_types: dict[str, training] = {
+    workout_types: dict = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking,
